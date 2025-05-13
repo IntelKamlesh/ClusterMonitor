@@ -4,25 +4,6 @@ modules = ["nodejs-20"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Angular Dashboard Server"
-
-[[workflows.workflow]]
-name = "Angular Dashboard Server"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm install @angular/cli @angular/common @angular/core @angular/platform-browser @angular/platform-browser-dynamic @angular/forms @angular/material @angular/cdk @angular/animations rxjs zone.js typescript && npx ng serve --host 0.0.0.0 --port 5000 --disable-host-check"
-waitForPort = 5000
 
 [deployment]
-run = ["sh", "-c", "npm install @angular/cli @angular/common @angular/core @angular/platform-browser @angular/platform-browser-dynamic @angular/forms @angular/material @angular/cdk @angular/animations rxjs zone.js typescript && npx ng serve --host 0.0.0.0 --port 5000 --disable-host-check"]
+run = ["sh", "-c", "cd src && npx http-server -p 5000"]

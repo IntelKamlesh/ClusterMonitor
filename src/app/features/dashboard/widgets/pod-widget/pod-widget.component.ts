@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Pod } from '../../../../core/models/pod.model';
 
 @Component({
@@ -12,9 +11,6 @@ export class PodWidgetComponent implements OnChanges {
   @Input() loading: boolean | null = false;
   @Input() error: string | null = null;
   @Output() refresh = new EventEmitter<void>();
-
-  displayedColumns: string[] = ['name', 'namespace', 'phase', 'restarts', 'age'];
-  dataSource = new MatTableDataSource<Pod>([]);
   
   // For pod status counts
   statusCounts = {
@@ -27,7 +23,6 @@ export class PodWidgetComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pods'] && this.pods) {
-      this.dataSource.data = this.pods;
       this.updateStatusCounts();
     }
   }

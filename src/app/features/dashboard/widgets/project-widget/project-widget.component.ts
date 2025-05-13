@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Project } from '../../../../core/models/project.model';
 
 @Component({
@@ -13,13 +12,8 @@ export class ProjectWidgetComponent implements OnChanges {
   @Input() error: string | null = null;
   @Output() refresh = new EventEmitter<void>();
 
-  displayedColumns: string[] = ['name', 'namespace', 'status', 'resourceUsage'];
-  dataSource = new MatTableDataSource<Project>([]);
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['projects'] && this.projects) {
-      this.dataSource.data = this.projects;
-    }
+    // No need to update dataSource as we're using pure Angular now
   }
 
   refreshData(): void {

@@ -2,46 +2,46 @@
   <div class="dashboard-header">
     <h1 class="dashboard-title">Kubernetes Dashboard</h1>
     <div class="dashboard-actions">
-      <button mat-raised-button color="primary" (click)="refreshAllData()">
-        <mat-icon>refresh</mat-icon> Refresh All
+      <button class="refresh-button" (click)="refreshAllData()">
+        <span>↻</span> Refresh All
       </button>
     </div>
   </div>
 
   <!-- Summary Cards -->
   <div class="summary-section" *ngIf="dashboardSummary$ | async as summary">
-    <mat-card class="summary-card">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>folder</mat-icon>
-        <mat-card-title>Projects</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+    <div class="summary-card">
+      <div class="card-header">
+        <span class="card-icon">📁</span>
+        <h2 class="card-title">Projects</h2>
+      </div>
+      <div class="card-content">
         <div class="summary-value">{{summary.projectCount}}</div>
         <div class="summary-subtitle">{{summary.activeProjects}} Active</div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
-    <mat-card class="summary-card">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>dns</mat-icon>
-        <mat-card-title>Deployments</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+    <div class="summary-card">
+      <div class="card-header">
+        <span class="card-icon">🔄</span>
+        <h2 class="card-title">Deployments</h2>
+      </div>
+      <div class="card-content">
         <div class="summary-value">{{summary.deploymentCount}}</div>
         <div class="summary-subtitle">{{summary.successfulDeployments}} Successful</div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
-    <mat-card class="summary-card">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>widgets</mat-icon>
-        <mat-card-title>Pods</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+    <div class="summary-card">
+      <div class="card-header">
+        <span class="card-icon">⚙️</span>
+        <h2 class="card-title">Pods</h2>
+      </div>
+      <div class="card-content">
         <div class="summary-value">{{summary.podCount}}</div>
         <div class="summary-subtitle">{{summary.runningPods}} Running</div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </div>
 
   <!-- Dashboard Widgets Grid -->

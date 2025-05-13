@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Deployment } from '../../../../core/models/deployment.model';
 
 @Component({
@@ -13,13 +12,8 @@ export class DeploymentWidgetComponent implements OnChanges {
   @Input() error: string | null = null;
   @Output() refresh = new EventEmitter<void>();
 
-  displayedColumns: string[] = ['name', 'namespace', 'replicas', 'status', 'strategy'];
-  dataSource = new MatTableDataSource<Deployment>([]);
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['deployments'] && this.deployments) {
-      this.dataSource.data = this.deployments;
-    }
+    // No need to update dataSource as we're using pure Angular now
   }
 
   refreshData(): void {

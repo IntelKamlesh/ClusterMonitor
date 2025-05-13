@@ -1,14 +1,14 @@
-<mat-card class="widget-card">
-  <mat-card-header>
-    <mat-icon mat-card-avatar>widgets</mat-icon>
-    <mat-card-title>Pods</mat-card-title>
+<div class="widget-card">
+  <div class="card-header">
+    <span class="card-icon">⚙️</span>
+    <h2 class="card-title">Pods</h2>
     <span class="header-spacer"></span>
-    <button mat-icon-button (click)="refreshData()" [disabled]="loading">
-      <mat-icon>refresh</mat-icon>
+    <button class="refresh-button" (click)="refreshData()" [disabled]="loading">
+      <span>↻</span>
     </button>
-  </mat-card-header>
+  </div>
   
-  <mat-card-content>
+  <div class="card-content">
     <ng-container *ngIf="loading">
       <app-loading-spinner></app-loading-spinner>
     </ng-container>
@@ -48,62 +48,48 @@
       </div>
 
       <div class="table-container">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let pod">
-              <div class="pod-name">{{pod.name}}</div>
-              <div class="pod-meta">Node: {{pod.nodeName}}</div>
-            </td>
-          </ng-container>
-  
-          <!-- Namespace Column -->
-          <ng-container matColumnDef="namespace">
-            <th mat-header-cell *matHeaderCellDef>Namespace</th>
-            <td mat-cell *matCellDef="let pod">{{pod.namespace}}</td>
-          </ng-container>
-  
-          <!-- Phase Column -->
-          <ng-container matColumnDef="phase">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let pod">
-              <span class="status-chip" [ngClass]="getStatusColor(pod.phase)">
-                {{pod.phase}}
-              </span>
-            </td>
-          </ng-container>
-  
-          <!-- Restarts Column -->
-          <ng-container matColumnDef="restarts">
-            <th mat-header-cell *matHeaderCellDef>Restarts</th>
-            <td mat-cell *matCellDef="let pod">
-              <span class="restart-count" 
-                    [ngClass]="{'high-restart': pod.restartCount > 5}">
-                {{pod.restartCount}}
-              </span>
-            </td>
-          </ng-container>
-  
-          <!-- Age Column -->
-          <ng-container matColumnDef="age">
-            <th mat-header-cell *matHeaderCellDef>Age</th>
-            <td mat-cell *matCellDef="let pod">
-              {{calculateAge(pod.creationTimestamp)}}
-            </td>
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Namespace</th>
+              <th>Status</th>
+              <th>Restarts</th>
+              <th>Age</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pod of pods">
+              <td>
+                <div class="pod-name">{{pod.name}}</div>
+                <div class="pod-meta">Node: {{pod.nodeName}}</div>
+              </td>
+              <td>{{pod.namespace}}</td>
+              <td>
+                <span class="status-chip" [ngClass]="getStatusColor(pod.phase)">
+                  {{pod.phase}}
+                </span>
+              </td>
+              <td>
+                <span class="restart-count" 
+                      [ngClass]="{'high-restart': pod.restartCount > 5}">
+                  {{pod.restartCount}}
+                </span>
+              </td>
+              <td>
+                {{calculateAge(pod.creationTimestamp)}}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </ng-container>
     
     <ng-container *ngIf="!loading && !error && (!pods || pods.length === 0)">
       <div class="empty-state">
-        <mat-icon>widgets</mat-icon>
+        <span class="empty-icon">⚙️</span>
         <p>No pods found</p>
       </div>
     </ng-container>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

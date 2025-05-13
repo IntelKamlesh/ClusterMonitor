@@ -1,14 +1,14 @@
-<mat-card class="widget-card">
-  <mat-card-header>
-    <mat-icon mat-card-avatar>dns</mat-icon>
-    <mat-card-title>Deployments</mat-card-title>
+<div class="widget-card">
+  <div class="card-header">
+    <span class="card-icon">🔄</span>
+    <h2 class="card-title">Deployments</h2>
     <span class="header-spacer"></span>
-    <button mat-icon-button (click)="refreshData()" [disabled]="loading">
-      <mat-icon>refresh</mat-icon>
+    <button class="refresh-button" (click)="refreshData()" [disabled]="loading">
+      <span>↻</span>
     </button>
-  </mat-card-header>
+  </div>
   
-  <mat-card-content>
+  <div class="card-content">
     <ng-container *ngIf="loading">
       <app-loading-spinner></app-loading-spinner>
     </ng-container>
@@ -19,66 +19,54 @@
     
     <ng-container *ngIf="!loading && !error && deployments && deployments.length > 0">
       <div class="table-container">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let deployment">
-              <div class="deployment-name">{{deployment.name}}</div>
-              <div class="deployment-meta">Created: {{deployment.creationTimestamp | date:'short'}}</div>
-            </td>
-          </ng-container>
-  
-          <!-- Namespace Column -->
-          <ng-container matColumnDef="namespace">
-            <th mat-header-cell *matHeaderCellDef>Namespace</th>
-            <td mat-cell *matCellDef="let deployment">{{deployment.namespace}}</td>
-          </ng-container>
-  
-          <!-- Replicas Column -->
-          <ng-container matColumnDef="replicas">
-            <th mat-header-cell *matHeaderCellDef>Replicas</th>
-            <td mat-cell *matCellDef="let deployment">
-              <div class="replica-status">
-                <mat-progress-bar mode="determinate" [value]="calculateReplicaPercentage(deployment)"></mat-progress-bar>
-                <span class="replica-text">{{formatReplicas(deployment)}}</span>
-              </div>
-            </td>
-          </ng-container>
-  
-          <!-- Status Column -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let deployment">
-              <span class="status-chip" [ngClass]="getStatusColor(deployment.status)">
-                {{deployment.status}}
-              </span>
-            </td>
-          </ng-container>
-  
-          <!-- Strategy Column -->
-          <ng-container matColumnDef="strategy">
-            <th mat-header-cell *matHeaderCellDef>Strategy</th>
-            <td mat-cell *matCellDef="let deployment">
-              <div class="strategy-info">
-                <mat-icon *ngIf="deployment.strategy === 'RollingUpdate'" class="strategy-icon">autorenew</mat-icon>
-                <mat-icon *ngIf="deployment.strategy === 'Recreate'" class="strategy-icon">replay</mat-icon>
-                {{deployment.strategy}}
-              </div>
-            </td>
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Namespace</th>
+              <th>Replicas</th>
+              <th>Status</th>
+              <th>Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let deployment of deployments">
+              <td>
+                <div class="deployment-name">{{deployment.name}}</div>
+                <div class="deployment-meta">Created: {{deployment.creationTimestamp | date:'short'}}</div>
+              </td>
+              <td>{{deployment.namespace}}</td>
+              <td>
+                <div class="replica-status">
+                  <div class="progress-container">
+                    <div class="progress-bar" [style.width.%]="calculateReplicaPercentage(deployment)"></div>
+                  </div>
+                  <span class="replica-text">{{formatReplicas(deployment)}}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-chip" [ngClass]="getStatusColor(deployment.status)">
+                  {{deployment.status}}
+                </span>
+              </td>
+              <td>
+                <div class="strategy-info">
+                  <span *ngIf="deployment.strategy === 'RollingUpdate'" class="strategy-icon">🔄</span>
+                  <span *ngIf="deployment.strategy === 'Recreate'" class="strategy-icon">🔁</span>
+                  {{deployment.strategy}}
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </ng-container>
     
     <ng-container *ngIf="!loading && !error && (!deployments || deployments.length === 0)">
       <div class="empty-state">
-        <mat-icon>dns</mat-icon>
+        <span class="empty-icon">⚙️</span>
         <p>No deployments found</p>
       </div>
     </ng-container>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>
