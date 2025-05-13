@@ -1,0 +1,92 @@
+<mat-card class="widget-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>folder</mat-icon>
+    <mat-card-title>Projects</mat-card-title>
+    <span class="header-spacer"></span>
+    <button mat-icon-button (click)="refreshData()" [disabled]="loading">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <ng-container *ngIf="loading">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    
+    <ng-container *ngIf="error && !loading">
+      <app-error-message [message]="error"></app-error-message>
+    </ng-container>
+    
+    <ng-container *ngIf="!loading && !error && projects && projects.length > 0">
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let project">
+              <div class="project-name">{{project.name}}</div>
+              <div class="project-meta">Created: {{project.creationTimestamp | date:'short'}}</div>
+            </td>
+          </ng-container>
+  
+          <!-- Namespace Column -->
+          <ng-container matColumnDef="namespace">
+            <th mat-header-cell *matHeaderCellDef>Namespace</th>
+            <td mat-cell *matCellDef="let project">{{project.namespace}}</td>
+          </ng-container>
+  
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let project">
+              <span class="status-chip" [ngClass]="getStatusColor(project.status)">
+                {{project.status}}
+              </span>
+            </td>
+          </ng-container>
+  
+          <!-- Resource Usage Column -->
+          <ng-container matColumnDef="resourceUsage">
+            <th mat-header-cell *matHeaderCellDef>Resource Usage</th>
+            <td mat-cell *matCellDef="let project">
+              <div *ngIf="project.resourceQuota">
+                <div class="resource-usage">
+                  <span>CPU</span>
+                  <mat-progress-bar mode="determinate" 
+                    [value]="calculatePercentage(project.resourceQuota.cpu.used, project.resourceQuota.cpu.limit)">
+                  </mat-progress-bar>
+                  <span class="usage-text">
+                    {{project.resourceQuota.cpu.used}} / {{project.resourceQuota.cpu.limit}}
+                  </span>
+                </div>
+                
+                <div class="resource-usage">
+                  <span>Memory</span>
+                  <mat-progress-bar mode="determinate" 
+                    [value]="calculatePercentage(project.resourceQuota.memory.used, project.resourceQuota.memory.limit)">
+                  </mat-progress-bar>
+                  <span class="usage-text">
+                    {{project.resourceQuota.memory.used}} / {{project.resourceQuota.memory.limit}}
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="!project.resourceQuota" class="no-data">
+                No quota information
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </ng-container>
+    
+    <ng-container *ngIf="!loading && !error && (!projects || projects.length === 0)">
+      <div class="empty-state">
+        <mat-icon>folder_open</mat-icon>
+        <p>No projects found</p>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

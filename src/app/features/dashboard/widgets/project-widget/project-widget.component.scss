@@ -1,0 +1,105 @@
+.widget-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  mat-card-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+.table-container {
+  flex: 1;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.project-name {
+  font-weight: 500;
+}
+
+.project-meta {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.status-chip {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: #dff7e5;
+  color: #1e7e34;
+}
+
+.status-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-neutral {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.resource-usage {
+  margin: 8px 0;
+  
+  span {
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+  
+  .usage-text {
+    text-align: right;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 2px;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.5);
+  
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.no-data {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 8px 0;
+}

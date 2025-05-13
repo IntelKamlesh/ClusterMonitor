@@ -1,0 +1,109 @@
+<mat-card class="widget-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>widgets</mat-icon>
+    <mat-card-title>Pods</mat-card-title>
+    <span class="header-spacer"></span>
+    <button mat-icon-button (click)="refreshData()" [disabled]="loading">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <ng-container *ngIf="loading">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    
+    <ng-container *ngIf="error && !loading">
+      <app-error-message [message]="error"></app-error-message>
+    </ng-container>
+    
+    <ng-container *ngIf="!loading && !error && pods && pods.length > 0">
+      <!-- Pod Status Counts -->
+      <div class="status-summary">
+        <div class="status-item" *ngIf="statusCounts.running > 0">
+          <div class="status-indicator status-success"></div>
+          <div class="status-count">{{statusCounts.running}}</div>
+          <div class="status-label">Running</div>
+        </div>
+        <div class="status-item" *ngIf="statusCounts.pending > 0">
+          <div class="status-indicator status-warning"></div>
+          <div class="status-count">{{statusCounts.pending}}</div>
+          <div class="status-label">Pending</div>
+        </div>
+        <div class="status-item" *ngIf="statusCounts.succeeded > 0">
+          <div class="status-indicator status-info"></div>
+          <div class="status-count">{{statusCounts.succeeded}}</div>
+          <div class="status-label">Succeeded</div>
+        </div>
+        <div class="status-item" *ngIf="statusCounts.failed > 0">
+          <div class="status-indicator status-error"></div>
+          <div class="status-count">{{statusCounts.failed}}</div>
+          <div class="status-label">Failed</div>
+        </div>
+        <div class="status-item" *ngIf="statusCounts.unknown > 0">
+          <div class="status-indicator status-neutral"></div>
+          <div class="status-count">{{statusCounts.unknown}}</div>
+          <div class="status-label">Unknown</div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let pod">
+              <div class="pod-name">{{pod.name}}</div>
+              <div class="pod-meta">Node: {{pod.nodeName}}</div>
+            </td>
+          </ng-container>
+  
+          <!-- Namespace Column -->
+          <ng-container matColumnDef="namespace">
+            <th mat-header-cell *matHeaderCellDef>Namespace</th>
+            <td mat-cell *matCellDef="let pod">{{pod.namespace}}</td>
+          </ng-container>
+  
+          <!-- Phase Column -->
+          <ng-container matColumnDef="phase">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let pod">
+              <span class="status-chip" [ngClass]="getStatusColor(pod.phase)">
+                {{pod.phase}}
+              </span>
+            </td>
+          </ng-container>
+  
+          <!-- Restarts Column -->
+          <ng-container matColumnDef="restarts">
+            <th mat-header-cell *matHeaderCellDef>Restarts</th>
+            <td mat-cell *matCellDef="let pod">
+              <span class="restart-count" 
+                    [ngClass]="{'high-restart': pod.restartCount > 5}">
+                {{pod.restartCount}}
+              </span>
+            </td>
+          </ng-container>
+  
+          <!-- Age Column -->
+          <ng-container matColumnDef="age">
+            <th mat-header-cell *matHeaderCellDef>Age</th>
+            <td mat-cell *matCellDef="let pod">
+              {{calculateAge(pod.creationTimestamp)}}
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </ng-container>
+    
+    <ng-container *ngIf="!loading && !error && (!pods || pods.length === 0)">
+      <div class="empty-state">
+        <mat-icon>widgets</mat-icon>
+        <p>No pods found</p>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

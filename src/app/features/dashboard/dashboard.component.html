@@ -1,0 +1,79 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Kubernetes Dashboard</h1>
+    <div class="dashboard-actions">
+      <button mat-raised-button color="primary" (click)="refreshAllData()">
+        <mat-icon>refresh</mat-icon> Refresh All
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-section" *ngIf="dashboardSummary$ | async as summary">
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>folder</mat-icon>
+        <mat-card-title>Projects</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="summary-value">{{summary.projectCount}}</div>
+        <div class="summary-subtitle">{{summary.activeProjects}} Active</div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>dns</mat-icon>
+        <mat-card-title>Deployments</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="summary-value">{{summary.deploymentCount}}</div>
+        <div class="summary-subtitle">{{summary.successfulDeployments}} Successful</div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>widgets</mat-icon>
+        <mat-card-title>Pods</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="summary-value">{{summary.podCount}}</div>
+        <div class="summary-subtitle">{{summary.runningPods}} Running</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Dashboard Widgets Grid -->
+  <div class="dashboard-grid">
+    <!-- Project Widget -->
+    <div class="widget-container">
+      <app-project-widget 
+        [projects]="projects$ | async" 
+        [loading]="projectsLoading$ | async" 
+        [error]="projectsError$ | async"
+        (refresh)="projectService.refreshProjects()">
+      </app-project-widget>
+    </div>
+
+    <!-- Deployment Widget -->
+    <div class="widget-container">
+      <app-deployment-widget 
+        [deployments]="deployments$ | async" 
+        [loading]="deploymentsLoading$ | async" 
+        [error]="deploymentsError$ | async"
+        (refresh)="deploymentService.refreshDeployments()">
+      </app-deployment-widget>
+    </div>
+
+    <!-- Pod Widget -->
+    <div class="widget-container">
+      <app-pod-widget 
+        [pods]="pods$ | async" 
+        [loading]="podsLoading$ | async" 
+        [error]="podsError$ | async"
+        (refresh)="podService.refreshPods()">
+      </app-pod-widget>
+    </div>
+  </div>
+</div>
