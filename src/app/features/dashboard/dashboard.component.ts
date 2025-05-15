@@ -7,6 +7,12 @@ import { PodService } from '../../core/services/pod.service';
 import { Project } from '../../core/models/project.model';
 import { Deployment } from '../../core/models/deployment.model';
 import { Pod } from '../../core/models/pod.model';
+import { AsyncPipe, NgClass, DatePipe } from '@angular/common';
+import { LoadingSpinnerComponent } from 'src/app/shared/components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from 'src/app/shared/components/error-message/error-message.component';
+import { PodWidgetComponent } from './widgets/pod-widget/pod-widget.component';
+import { ProjectWidgetComponent } from './widgets/project-widget/project-widget.component';
+import { DeploymentWidgetComponent } from './widgets/deployment-widget/deployment-widget.component';
 
 interface DashboardSummary {
   projectCount: number;
@@ -20,7 +26,18 @@ interface DashboardSummary {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    NgClass,
+    DatePipe,
+    ProjectWidgetComponent,
+    DeploymentWidgetComponent,
+    PodWidgetComponent,
+    LoadingSpinnerComponent,
+    ErrorMessageComponent
+  ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   // Data observables
@@ -42,9 +59,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   
   constructor(
-    private projectService: ProjectService,
-    private deploymentService: DeploymentService,
-    private podService: PodService
+    public projectService: ProjectService,
+    public deploymentService: DeploymentService,
+    public podService: PodService
   ) { 
     // Initialize observables
     this.projects$ = this.projectService.getProjects();

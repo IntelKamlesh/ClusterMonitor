@@ -1,15 +1,21 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Pod } from '../../../../core/models/pod.model';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { LoadingSpinnerComponent } from 'src/app/shared/components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from 'src/app/shared/components/error-message/error-message.component';
+
 
 @Component({
   selector: 'app-pod-widget',
   templateUrl: './pod-widget.component.html',
-  styleUrls: ['./pod-widget.component.scss']
+  styleUrls: ['./pod-widget.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgFor, NgIf, LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class PodWidgetComponent implements OnChanges {
-  @Input() pods: Pod[] | null = [];
+  @Input() pods: any[] | null = [];
   @Input() loading: boolean | null = false;
-  @Input() error: string | null = null;
+  @Input() error: any | null = null;
   @Output() refresh = new EventEmitter<void>();
   
   // For pod status counts

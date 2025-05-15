@@ -1,15 +1,21 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Deployment } from '../../../../core/models/deployment.model';
+import { NgClass, NgFor, NgIf, DatePipe } from '@angular/common';
+import { LoadingSpinnerComponent } from 'src/app/shared/components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from 'src/app/shared/components/error-message/error-message.component';
+
 
 @Component({
   selector: 'app-deployment-widget',
   templateUrl: './deployment-widget.component.html',
-  styleUrls: ['./deployment-widget.component.scss']
+  styleUrls: ['./deployment-widget.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgFor, NgIf, DatePipe, LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class DeploymentWidgetComponent implements OnChanges {
-  @Input() deployments: Deployment[] | null = [];
+  @Input() deployments: any[] | null=[];;
   @Input() loading: boolean | null = false;
-  @Input() error: string | null = null;
+  @Input() error: any | null = null;
   @Output() refresh = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {

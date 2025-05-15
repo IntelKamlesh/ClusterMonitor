@@ -1,15 +1,20 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Project } from '../../../../core/models/project.model';
+import { NgClass, NgFor, NgIf, DatePipe } from '@angular/common';
+import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from 'src/app/shared/components/error-message/error-message.component';
 
 @Component({
   selector: 'app-project-widget',
   templateUrl: './project-widget.component.html',
-  styleUrls: ['./project-widget.component.scss']
+  styleUrls: ['./project-widget.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgFor, NgIf, DatePipe, LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class ProjectWidgetComponent implements OnChanges {
-  @Input() projects: Project[] | null = [];
+  @Input() projects: any[] | null = [];
   @Input() loading: boolean | null = false;
-  @Input() error: string | null = null;
+  @Input() error: any | null = null;
   @Output() refresh = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
